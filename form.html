@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire d'inscription — Emploi.ca</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        /* ─── Variables ─────────────────────────────────────── */
+        :root {
+            --rouge:      #C0392B;
+            --rouge-clair:#E74C3C;
+            --blanc:      #F9F7F4;
+            --gris-clair: #EDEAE4;
+            --gris-mid:   #B0A99F;
+            --encre:      #1A1714;
+            --or:         #D4A843;
+            --vert:       #27AE60;
+            --radius:     10px;
+            --shadow:     0 4px 24px rgba(26,23,20,.10);
+            --trans:      .25s cubic-bezier(.4,0,.2,1);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Sora', sans-serif;
+            background: var(--blanc);
+            color: var(--encre);
+            min-height: 100vh;
+        }
+
+        /* ─── Header ────────────────────────────────────────── */
+        header {
+            background: var(--encre);
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+            border-bottom: 3px solid var(--rouge);
+        }
+
+        .logo {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.6rem;
+            color: #fff;
+            text-decoration: none;
+            letter-spacing: -.5px;
+        }
+
+        .logo span { color: var(--rouge-clair); }
+
+        .header-tag {
+            font-size: .72rem;
+            font-weight: 600;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: var(--gris-mid);
+        }
+
+        /* ─── Bandeau page ──────────────────────────────────── */
+        .page-banner {
+            background: linear-gradient(135deg, var(--encre) 0%, #2c2620 100%);
+            padding: 2.5rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-banner::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 70% 80% at 30% 50%, rgba(192,57,43,.2) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .page-banner .eyebrow {
+            display: inline-block;
+            font-size: .7rem;
+            font-weight: 700;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            color: var(--or);
+            border: 1px solid rgba(212,168,67,.35);
+            padding: .28rem .85rem;
+            border-radius: 99px;
+            margin-bottom: .85rem;
+        }
+
+        .page-banner h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(1.6rem, 4vw, 2.4rem);
+            color: #fff;
+            line-height: 1.2;
+        }
+
+        .page-banner h1 em { font-style: italic; color: var(--rouge-clair); }
+
+        .page-banner p {
+            font-size: .875rem;
+            color: #c9c3bb;
+            margin-top: .6rem;
+            font-weight: 300;
+        }
+
+        /* ─── Breadcrumb ────────────────────────────────────── */
+        .breadcrumb {
+            max-width: 640px;
+            margin: 1.5rem auto 0;
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+            font-size: .78rem;
+            color: var(--gris-mid);
+        }
+
+        .breadcrumb a { color: var(--rouge); text-decoration: none; font-weight: 600; }
+        .breadcrumb a:hover { text-decoration: underline; }
+        .breadcrumb span { color: var(--gris-clair); }
+
+        /* ─── Main ──────────────────────────────────────────── */
+        main {
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 5rem;
+        }
+
+        /* ─── Carte formulaire ──────────────────────────────── */
+        .form-card {
+            background: #fff;
+            border: 1.5px solid var(--gris-clair);
+            border-radius: 14px;
+            padding: 2.25rem 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .form-section-title {
+            font-size: .68rem;
+            font-weight: 700;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            color: var(--gris-mid);
+            padding-bottom: .6rem;
+            border-bottom: 1px solid var(--gris-clair);
+            margin-bottom: 1.5rem;
+        }
+
+        /* ─── Champs ────────────────────────────────────────── */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: .4rem;
+            margin-bottom: 1.15rem;
+        }
+
+        label {
+            font-size: .72rem;
+            font-weight: 700;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--encre);
+        }
+
+        .field-hint {
+            font-size: .72rem;
+            color: var(--gris-mid);
+            font-weight: 400;
+            letter-spacing: 0;
+            text-transform: none;
+            margin-top: -.2rem;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="date"] {
+            width: 100%;
+            padding: .72rem 1rem;
+            border: 1.5px solid var(--gris-clair);
+            border-radius: var(--radius);
+            font-family: 'Sora', sans-serif;
+            font-size: .9rem;
+            color: var(--encre);
+            background: var(--blanc);
+            transition: border-color var(--trans), box-shadow var(--trans);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input:focus {
+            border-color: var(--rouge);
+            box-shadow: 0 0 0 3px rgba(192,57,43,.1);
+            background: #fff;
+        }
+
+        input::placeholder { color: #c8c2bb; font-weight: 300; }
+
+        /* Upload stylisé */
+        .upload-zone {
+            border: 2px dashed var(--gris-clair);
+            border-radius: var(--radius);
+            padding: 1.5rem 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color var(--trans), background var(--trans);
+            position: relative;
+        }
+
+        .upload-zone:hover { border-color: var(--rouge); background: #fff8f7; }
+
+        .upload-zone input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+
+        .upload-icon { font-size: 1.6rem; margin-bottom: .4rem; }
+        .upload-label { font-size: .85rem; font-weight: 600; color: var(--encre); }
+        .upload-sub { font-size: .75rem; color: var(--gris-mid); margin-top: .2rem; }
+
+        .upload-zone.has-file { border-color: #22c55e; background: #f0fdf4; }
+        .upload-zone.has-file .upload-icon,
+        .upload-zone.has-file .upload-label,
+        .upload-zone.has-file .upload-sub { opacity: 0.45; }
+
+        /* Séparateur */
+        .divider { border: none; border-top: 1px solid var(--gris-clair); margin: 1.75rem 0; }
+
+        /* ─── Aperçu fichier ────────────────────────────────── */
+        .file-preview {
+            display: none;
+            margin-top: 12px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1.5px solid #e2e8f0;
+            background: #f8fafc;
+            animation: fadeInUp 0.3s ease;
+        }
+
+        .file-preview.visible { display: block; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(6px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .preview-img-wrap {
+            width: 100%;
+            max-height: 220px;
+            overflow: hidden;
+            background: #0f172a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .preview-img-wrap img {
+            width: 100%;
+            max-height: 220px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .preview-pdf-wrap {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 18px;
+        }
+
+        .preview-pdf-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            background: #fee2e2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+
+        .preview-pdf-info { flex: 1; min-width: 0; }
+
+        .preview-pdf-name {
+            font-weight: 600;
+            font-size: .88rem;
+            color: #1e293b;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .preview-pdf-size { font-size: .78rem; color: #64748b; margin-top: 2px; }
+
+        .preview-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 14px;
+            background: #f1f5f9;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .preview-meta-name {
+            font-size: .8rem;
+            font-weight: 600;
+            color: #334155;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 65%;
+        }
+
+        .preview-meta-size { font-size: .78rem; color: #64748b; }
+
+        .preview-remove {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            color: #94a3b8;
+            padding: 2px 4px;
+            border-radius: 4px;
+            transition: color .2s;
+            flex-shrink: 0;
+        }
+
+        .preview-remove:hover { color: #ef4444; }
+
+        /* ─── Bloc paiement ─────────────────────────────────── */
+        .payment-block {
+            background: linear-gradient(135deg, #fff8f2 0%, #fff3f3 100%);
+            border: 1.5px solid rgba(192,57,43,.2);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-top: .5rem;
+        }
+
+        .payment-header {
+            display: flex;
+            align-items: center;
+            gap: .7rem;
+            margin-bottom: 1rem;
+        }
+
+        .payment-badge {
+            background: var(--rouge);
+            color: #fff;
+            font-size: .68rem;
+            font-weight: 700;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            padding: .25rem .7rem;
+            border-radius: 99px;
+        }
+
+        .payment-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.15rem;
+            color: var(--encre);
+        }
+
+        .payment-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: .75rem;
+            background: #fff;
+            border: 1.5px solid var(--gris-clair);
+            border-radius: 8px;
+            padding: .9rem 1.1rem;
+        }
+
+        .payment-info-label {
+            font-size: .72rem;
+            font-weight: 700;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--gris-mid);
+            margin-bottom: .2rem;
+        }
+
+        .payment-number {
+            font-size: 1.15rem;
+            font-weight: 700;
+            letter-spacing: .08em;
+            color: var(--encre);
+        }
+
+        .copy-btn {
+            display: flex;
+            align-items: center;
+            gap: .4rem;
+            font-family: 'Sora', sans-serif;
+            font-size: .78rem;
+            font-weight: 600;
+            color: var(--rouge);
+            background: rgba(192,57,43,.07);
+            border: 1px solid rgba(192,57,43,.2);
+            border-radius: 6px;
+            padding: .4rem .85rem;
+            cursor: pointer;
+            transition: background var(--trans);
+        }
+
+        .copy-btn:hover { background: rgba(192,57,43,.14); }
+        .copy-btn.copied { color: var(--vert); border-color: rgba(39,174,96,.3); background: rgba(39,174,96,.07); }
+
+        .payment-note {
+            font-size: .78rem;
+            color: var(--gris-mid);
+            margin-top: .85rem;
+            line-height: 1.6;
+        }
+
+        .payment-note strong { color: var(--encre); }
+
+        /* ─── Bouton soumettre ──────────────────────────────── */
+        .btn-submit {
+            width: 100%;
+            margin-top: 1.75rem;
+            padding: .95rem 1.5rem;
+            background: var(--rouge);
+            color: #fff;
+            font-family: 'Sora', sans-serif;
+            font-size: .95rem;
+            font-weight: 700;
+            letter-spacing: .04em;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: background var(--trans), transform var(--trans), box-shadow var(--trans);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: .5rem;
+        }
+
+        .btn-submit:hover {
+            background: var(--rouge-clair);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(192,57,43,.3);
+        }
+
+        .btn-submit:active { transform: translateY(0); }
+
+        /* ─── Mention légale ────────────────────────────────── */
+        .legal {
+            font-size: .73rem;
+            color: var(--gris-mid);
+            text-align: center;
+            margin-top: 1rem;
+            line-height: 1.6;
+        }
+
+        /* ─── Footer ────────────────────────────────────────── */
+        footer {
+            background: var(--encre);
+            color: var(--gris-mid);
+            text-align: center;
+            padding: 1.5rem;
+            font-size: .78rem;
+            letter-spacing: .04em;
+        }
+
+        footer strong { color: #fff; }
+
+        /* ─── Écrans de statut ──────────────────────────────── */
+        .status-screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 3rem 2rem;
+            animation: fadeUp .45s cubic-bezier(.4,0,.2,1) forwards;
+        }
+
+        .status-screen.active { display: flex; }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(18px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .status-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        #screen-pending .status-icon {
+            background: rgba(212,168,67,.15);
+            border: 2px solid rgba(212,168,67,.4);
+        }
+
+        #screen-pending .status-tag {
+            display: inline-block;
+            font-size: .68rem;
+            font-weight: 700;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+            color: #a07b10;
+            background: rgba(212,168,67,.15);
+            border: 1px solid rgba(212,168,67,.35);
+            padding: .28rem .85rem;
+            border-radius: 99px;
+            margin-bottom: .9rem;
+        }
+
+        #screen-pending h2 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.7rem;
+            color: var(--encre);
+            margin-bottom: .6rem;
+        }
+
+        #screen-pending .status-desc {
+            font-size: .9rem;
+            color: var(--gris-mid);
+            line-height: 1.7;
+            max-width: 380px;
+        }
+
+        .pending-steps {
+            width: 100%;
+            max-width: 400px;
+            margin: 1.75rem 0;
+            display: flex;
+            flex-direction: column;
+            gap: .65rem;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: .85rem;
+            background: var(--blanc);
+            border: 1.5px solid var(--gris-clair);
+            border-radius: 8px;
+            padding: .75rem 1rem;
+            font-size: .85rem;
+        }
+
+        .step-num {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: var(--gris-clair);
+            color: var(--gris-mid);
+            font-size: .72rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .step.done .step-num      { background: var(--vert); color: #fff; }
+        .step.active-step .step-num { background: var(--or); color: #fff; }
+        .step-text { font-weight: 500; text-align: left; }
+        .step-text small { display: block; font-size: .73rem; color: var(--gris-mid); font-weight: 400; margin-top: .1rem; }
+
+        .pending-account {
+            background: #fff;
+            border: 1.5px solid rgba(212,168,67,.3);
+            border-radius: var(--radius);
+            padding: 1rem 1.25rem;
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 1.5rem;
+        }
+
+        .pending-account .payment-info-label { margin-bottom: .3rem; }
+        .pending-account .payment-number { font-size: 1.3rem; }
+
+        #screen-accepted .status-icon {
+            background: rgba(39,174,96,.12);
+            border: 2px solid rgba(39,174,96,.35);
+        }
+
+        #screen-accepted .status-tag {
+            display: inline-block;
+            font-size: .68rem;
+            font-weight: 700;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+            color: #1a7a45;
+            background: rgba(39,174,96,.12);
+            border: 1px solid rgba(39,174,96,.3);
+            padding: .28rem .85rem;
+            border-radius: 99px;
+            margin-bottom: .9rem;
+        }
+
+        #screen-accepted h2 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.7rem;
+            color: var(--encre);
+            margin-bottom: .6rem;
+        }
+
+        #screen-accepted .status-desc {
+            font-size: .9rem;
+            color: var(--gris-mid);
+            line-height: 1.7;
+            max-width: 380px;
+        }
+
+        .accepted-info {
+            width: 100%;
+            max-width: 400px;
+            background: linear-gradient(135deg, #f0fdf5, #e8faf0);
+            border: 1.5px solid rgba(39,174,96,.25);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            margin: 1.5rem 0;
+            display: flex;
+            flex-direction: column;
+            gap: .6rem;
+        }
+
+        .accepted-row { display: flex; align-items: center; gap: .7rem; font-size: .88rem; }
+        .accepted-row span:first-child { font-size: 1.1rem; }
+
+        .btn-simulate {
+            margin-top: .5rem;
+            padding: .85rem 2rem;
+            background: var(--vert);
+            color: #fff;
+            font-family: 'Sora', sans-serif;
+            font-size: .9rem;
+            font-weight: 700;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: background var(--trans), transform var(--trans), box-shadow var(--trans);
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+        }
+
+        .btn-simulate:hover {
+            background: #219a52;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(39,174,96,.3);
+        }
+
+        .pulse-ring { position: relative; }
+
+        .pulse-ring::after {
+            content: '';
+            position: absolute;
+            inset: -6px;
+            border-radius: 50%;
+            border: 2px solid rgba(212,168,67,.4);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: .6; }
+            50%       { transform: scale(1.12); opacity: .15; }
+        }
+
+        /* ─── Responsive ────────────────────────────────────── */
+        @media (max-width: 520px) {
+            .form-row { grid-template-columns: 1fr; }
+            .form-card { padding: 1.5rem 1.1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">Emploi<span>.ca</span></a>
+        <span class="header-tag">Portail d'immigration & emploi</span>
+    </header>
+
+    <section class="page-banner">
+        <span class="eyebrow">💼 Visa Travail</span>
+        <h1>Formulaire <em>d'inscription</em></h1>
+        <p>Complétez votre dossier pour soumettre votre candidature</p>
+    </section>
+
+    <div class="breadcrumb">
+        <a href="index.html">Accueil</a>
+        <span>›</span>
+        <a href="form.html">Inscription</a>
+    </div>
+
+    <main>
+        <div class="form-card">
+            <form action="" method="post">
+
+                <!-- ── Identité ── -->
+                <p class="form-section-title">Informations personnelles</p>
+            <form>
+                <div class="form-row">
+                    <div class="field">
+                        <label for="name">Nom</label>
+                        <input type="text" name="name" id="name" placeholder="DUPONT" required>
+                    </div>
+                    <div class="field">
+                        <label for="surname">Prénom</label>
+                        <input type="text" name="surname" id="surname" placeholder="Jean" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="field">
+                        <label for="dob">Date de naissance</label>
+                        <input type="date" name="dob" id="dob" required>
+                    </div>
+                    <div class="field">
+                        <label for="lieu">Lieu de naissance</label>
+                        <input type="text" name="lieu" id="lieu" placeholder="ex : Dakar" required>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="ville">Ville de résidence</label>
+                    <input type="text" name="ville" id="ville" placeholder="ex : Montréal" required>
+                </div>
+
+                <hr class="divider">
+
+                <!-- ── Contact ── -->
+                <p class="form-section-title">Coordonnées</p>
+
+                <div class="form-row">
+                    <div class="field">
+                        <label for="email">Adresse e-mail</label>
+                        <input type="email" name="email" id="email" placeholder="jean@exemple.com" required>
+                    </div>
+                    <div class="field">
+                        <label for="tel">Téléphone</label>
+                        <input type="tel" name="tel" id="tel" placeholder="+237 650 903 625">
+                    </div>
+                </div>
+
+                <hr class="divider">
+
+                <!-- ── Documents ── -->
+                <p class="form-section-title">Documents à fournir</p>
+
+                <!-- CNI / Passeport -->
+                <div class="field">
+                    <label>Pièce d'identité / Passeport</label>
+                    <span class="field-hint">PDF ou image — 5 Mo max</span>
+                    <div class="upload-zone" id="zone-id">
+                        <input type="file" name="doc_id" id="doc_id" accept=".pdf,.jpg,.jpeg,.png" required>
+                        <div class="upload-icon">📎</div>
+                        <div class="upload-label">Cliquez ou glissez votre fichier ici</div>
+                        <div class="upload-sub">Passeport, CNI ou titre de séjour</div>
+                    </div>
+                    <div class="file-preview" id="preview-id">
+                        <div class="preview-img-wrap" id="preview-id-img" style="display:none">
+                            <img id="preview-id-img-tag" src="" alt="Aperçu CNI">
+                        </div>
+                        <div class="preview-pdf-wrap" id="preview-id-pdf" style="display:none">
+                            <div class="preview-pdf-icon">📄</div>
+                            <div class="preview-pdf-info">
+                                <div class="preview-pdf-name" id="preview-id-pdf-name"></div>
+                                <div class="preview-pdf-size" id="preview-id-pdf-size"></div>
+                            </div>
+                        </div>
+                        <div class="preview-meta">
+                            <span class="preview-meta-name" id="preview-id-name"></span>
+                            <span class="preview-meta-size" id="preview-id-size"></span>
+                            <button type="button" class="preview-remove" onclick="removeFile('doc_id','preview-id','zone-id')" title="Supprimer">✕</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CV -->
+                <div class="field">
+                    <label>CV / Curriculum vitæ</label>
+                    <span class="field-hint">PDF uniquement</span>
+                    <div class="upload-zone" id="zone-cv">
+                        <input type="file" name="doc_cv" id="doc_cv" accept=".pdf" required>
+                        <div class="upload-icon">📄</div>
+                        <div class="upload-label">Cliquez ou glissez votre CV ici</div>
+                        <div class="upload-sub">Votre expérience et compétences</div>
+                    </div>
+                    <div class="file-preview" id="preview-cv">
+                        <div class="preview-pdf-wrap" id="preview-cv-pdf">
+                            <div class="preview-pdf-icon">📄</div>
+                            <div class="preview-pdf-info">
+                                <div class="preview-pdf-name" id="preview-cv-pdf-name"></div>
+                                <div class="preview-pdf-size" id="preview-cv-pdf-size"></div>
+                            </div>
+                        </div>
+                        <div class="preview-meta">
+                            <span class="preview-meta-name" id="preview-cv-name"></span>
+                            <span class="preview-meta-size" id="preview-cv-size"></span>
+                            <button type="button" class="preview-remove" onclick="removeFile('doc_cv','preview-cv','zone-cv')" title="Supprimer">✕</button>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="divider">
+
+                <!-- ── Paiement ── -->
+                <p class="form-section-title">Procéder au paiement</p>
+
+                <div class="payment-block">
+                    <div class="payment-header">
+                        <span class="payment-badge">Étape finale</span>
+                        <span class="payment-title">Versement des frais de dossier</span>
+                    </div>
+                    <div class="payment-info">
+                        <div>
+                            <div class="payment-info-label">Numéro de compte</div>
+                            <div class="payment-number">5678&nbsp;9098&nbsp;765</div>
+                        </div>
+                        <button type="button" class="copy-btn" id="copyBtn" onclick="copyNumber()">
+                            <span>📋</span> Copier
+                        </button>
+                    </div>
+                    <p class="payment-note">
+                        Effectuez votre virement puis joignez la <strong>preuve de paiement</strong>
+                        à votre dossier. Votre candidature sera traitée sous
+                        <strong>48 à 72 h</strong> après réception.
+                    </p>
+                </div>
+
+                <button type="submit" class="btn-submit">
+                    <span>✉️</span> Soumettre ma candidature
+                </button>
+
+            </form>
+
+            <p class="legal" id="legal-note">
+                Vos données sont traitées de façon confidentielle conformément à notre politique de confidentialité.
+            </p>
+
+            <!-- ── Écran 1 : En attente du paiement ── -->
+            <div class="status-screen" id="screen-pending">
+                <div class="status-icon pulse-ring">⏳</div>
+                <span class="status-tag">En attente</span>
+                <h2>Dossier soumis avec succès</h2>
+                <p class="status-desc">
+                    Votre candidature a bien été enregistrée.<br>
+                    Il ne reste plus qu'à finaliser votre paiement pour activer le traitement.
+                </p>
+                <div class="pending-steps">
+                    <div class="step done">
+                        <div class="step-num">✓</div>
+                        <div class="step-text">Formulaire soumis<small>Informations et documents reçus</small></div>
+                    </div>
+                    <div class="step active-step">
+                        <div class="step-num">2</div>
+                        <div class="step-text">Paiement des frais de dossier<small>En attente de votre virement</small></div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">3</div>
+                        <div class="step-text">Traitement de la demande<small>Sous 48 à 72 h après paiement</small></div>
+                    </div>
+                </div>
+                <div class="pending-account">
+                    <div class="payment-info-label">Numéro de versement</div>
+                    <div class="payment-number">&nbsp;9098&nbsp;765</div>
+                </div>
+                <div class="status-desc">vous s'y êtes presque !</div>
+            </div>
+
+            <!-- ── Écran 2 : Dossier accepté ── -->
+            <div class="status-screen" id="screen-accepted">
+                <div class="status-icon">🎉</div>
+                <span class="status-tag">Dossier accepté</span>
+                <h2>Votre dossier a été accepté !</h2>
+                <p class="status-desc">
+                    Paiement confirmé. Nous traitons votre requête et reviendrons vers vous très prochainement.
+                </p>
+                <div class="accepted-info">
+                    <div class="accepted-row"><span>✅</span><span>Formulaire soumis et validé</span></div>
+                    <div class="accepted-row"><span>✅</span><span>Paiement des frais confirmé</span></div>
+                    <div class="accepted-row"><span>⚙️</span><span>Traitement en cours — <strong>48 à 72 h</strong></span></div>
+                    <div class="accepted-row"><span>📧</span><span>Un e-mail de confirmation vous sera envoyé</span></div>
+                </div>
+                <p class="legal" style="max-width:380px">
+                    Conservez votre preuve de paiement. Notre équipe vous contactera par e-mail ou téléphone.
+                </p>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        &copy; 2025 <strong>Emploi.ca</strong> — Tous droits réservés
+    </footer>
+
+    <script>
+        function formatSize(bytes) {
+            if (bytes < 1024) return bytes + ' o';
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' Ko';
+            return (bytes / (1024 * 1024)).toFixed(2) + ' Mo';
+        }
+
+        document.getElementById('doc_id').addEventListener('change', function () {
+            const file = this.files[0];
+            if (!file) return;
+            const preview = document.getElementById('preview-id');
+            const imgWrap = document.getElementById('preview-id-img');
+            const imgTag  = document.getElementById('preview-id-img-tag');
+            const pdfWrap = document.getElementById('preview-id-pdf');
+            const zone    = document.getElementById('zone-id');
+
+            document.getElementById('preview-id-name').textContent = file.name;
+            document.getElementById('preview-id-size').textContent = formatSize(file.size);
+
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    imgTag.src = e.target.result;
+                    imgWrap.style.display = 'flex';
+                    pdfWrap.style.display = 'none';
+                    preview.classList.add('visible');
+                    zone.classList.add('has-file');
+                };
+                reader.readAsDataURL(file);
+            } else {
+                document.getElementById('preview-id-pdf-name').textContent = file.name;
+                document.getElementById('preview-id-pdf-size').textContent = formatSize(file.size);
+                imgWrap.style.display = 'none';
+                pdfWrap.style.display = 'flex';
+                preview.classList.add('visible');
+                zone.classList.add('has-file');
+            }
+        });
+
+        document.getElementById('doc_cv').addEventListener('change', function () {
+            const file = this.files[0];
+            if (!file) return;
+            document.getElementById('preview-cv-name').textContent     = file.name;
+            document.getElementById('preview-cv-size').textContent     = formatSize(file.size);
+            document.getElementById('preview-cv-pdf-name').textContent = file.name;
+            document.getElementById('preview-cv-pdf-size').textContent = formatSize(file.size);
+            document.getElementById('preview-cv').classList.add('visible');
+            document.getElementById('zone-cv').classList.add('has-file');
+        });
+
+        function removeFile(inputId, previewId, zoneId) {
+            document.getElementById(inputId).value = '';
+            document.getElementById(previewId).classList.remove('visible');
+            document.getElementById(zoneId).classList.remove('has-file');
+            if (inputId === 'doc_id') document.getElementById('preview-id-img-tag').src = '';
+        }
+
+        function copyNumber() {
+            navigator.clipboard.writeText('56789098765').then(() => {
+                const btn = document.getElementById('copyBtn');
+                btn.classList.add('copied');
+                btn.innerHTML = '<span>✅</span> Copié !';
+                setTimeout(() => {
+                    btn.classList.remove('copied');
+                    btn.innerHTML = '<span>📋</span> Copier';
+                }, 2500);
+            });
+        }
+
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            this.style.display = 'none';
+            document.getElementById('legal-note').style.display = 'none';
+            document.getElementById('screen-pending').classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+    
+    </script>
+</body>
+</html>

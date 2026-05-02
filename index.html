@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emploi.ca — Votre passerelle vers le Canada</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        /* ─── Variables ─────────────────────────────────────── */
+        :root {
+            --rouge:     #C0392B;
+            --rouge-clair:#E74C3C;
+            --blanc:     #F9F7F4;
+            --gris-clair:#EDEAE4;
+            --gris-mid:  #B0A99F;
+            --encre:     #1A1714;
+            --or:        #D4A843;
+            --radius:    10px;
+            --shadow:    0 4px 24px rgba(26,23,20,.10);
+            --trans:     .25s cubic-bezier(.4,0,.2,1);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Sora', sans-serif;
+            background: var(--blanc);
+            color: var(--encre);
+            min-height: 100vh;
+        }
+
+        /* ─── Header ────────────────────────────────────────── */
+        header {
+            background: var(--encre);
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 3px solid var(--rouge);
+        }
+
+        .logo {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.6rem;
+            color: #fff;
+            letter-spacing: -.5px;
+        }
+
+        .logo span { color: var(--rouge-clair); }
+
+        .header-tag {
+            font-size: .72rem;
+            font-weight: 600;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: var(--gris-mid);
+        }
+
+        /* ─── Hero ──────────────────────────────────────────── */
+        .hero {
+            background: linear-gradient(135deg, var(--encre) 0%, #2c2620 100%);
+            color: #fff;
+            padding: 4rem 2rem 3.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 60% 50% at 20% 40%, rgba(192,57,43,.25) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 60% at 80% 70%, rgba(212,168,67,.12) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-eyebrow {
+            display: inline-block;
+            font-size: .72rem;
+            font-weight: 700;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            color: var(--or);
+            margin-bottom: 1rem;
+            border: 1px solid rgba(212,168,67,.35);
+            padding: .3rem .9rem;
+            border-radius: 99px;
+        }
+
+        .hero h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            line-height: 1.15;
+            margin-bottom: 1rem;
+        }
+
+        .hero h1 em {
+            font-style: italic;
+            color: var(--rouge-clair);
+        }
+
+        .hero p {
+            font-size: .95rem;
+            font-weight: 300;
+            color: #c9c3bb;
+            max-width: 480px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* ─── Main layout ───────────────────────────────────── */
+        main {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem 5rem;
+        }
+
+        .section-title {
+            font-size: .72rem;
+            font-weight: 700;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            color: var(--gris-mid);
+            margin-bottom: 1.25rem;
+        }
+
+        /* ─── Visa cards ────────────────────────────────────── */
+        .visa-grid {
+            display: flex;
+            flex-direction: column;
+            gap: .75rem;
+        }
+
+        .visa-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #fff;
+            border: 1.5px solid var(--gris-clair);
+            border-radius: var(--radius);
+            padding: 1rem 1.25rem;
+            cursor: pointer;
+            transition: border-color var(--trans), box-shadow var(--trans), transform var(--trans);
+            user-select: none;
+        }
+
+        .visa-card:hover {
+            border-color: var(--rouge);
+            box-shadow: var(--shadow);
+            transform: translateY(-1px);
+        }
+
+        .visa-card.active {
+            border-color: var(--rouge);
+            background: #fff8f7;
+            box-shadow: 0 0 0 3px rgba(192,57,43,.08);
+        }
+
+        .visa-card-left {
+            display: flex;
+            align-items: center;
+            gap: .9rem;
+        }
+
+        .visa-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            background: var(--gris-clair);
+            flex-shrink: 0;
+        }
+
+        .visa-card.active .visa-icon {
+            background: rgba(192,57,43,.1);
+        }
+
+        .visa-label {
+            font-weight: 600;
+            font-size: .95rem;
+        }
+
+        .visa-sub {
+            font-size: .78rem;
+            color: var(--gris-mid);
+            margin-top: .15rem;
+        }
+
+        /* Toggle radio */
+        .toggle {
+            position: relative;
+            width: 44px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+
+        .toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
+
+        .toggle-track {
+            position: absolute;
+            inset: 0;
+            border-radius: 99px;
+            background: var(--gris-clair);
+            transition: background var(--trans);
+        }
+
+        .toggle-thumb {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #fff;
+            box-shadow: 0 1px 4px rgba(0,0,0,.2);
+            transition: transform var(--trans);
+        }
+
+        .toggle input:checked ~ .toggle-track { background: var(--rouge); }
+        .toggle input:checked ~ .toggle-thumb { transform: translateX(20px); }
+
+        /* ─── Listes accordéon ──────────────────────────────── */
+        .liste-visa {
+            display: none;
+            overflow: hidden;
+        }
+
+        .liste-visa.visible {
+            display: block;
+            animation: slideDown 0.35s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-8px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ─── Job list ──────────────────────────────────────── */
+        .jobs-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 1rem 0;
+        }
+
+        .jobs-count {
+            font-size: .78rem;
+            color: var(--gris-mid);
+            font-weight: 400;
+        }
+
+        .jobs-count strong {
+            color: var(--rouge);
+            font-weight: 700;
+        }
+
+        .job-category { margin-bottom: 1.5rem; }
+
+        .category-label {
+            font-size: .68rem;
+            font-weight: 700;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            color: var(--gris-mid);
+            padding: .4rem 0;
+            border-bottom: 1px solid var(--gris-clair);
+            margin-bottom: .6rem;
+        }
+
+        .job-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: .75rem 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--encre);
+            font-weight: 400;
+            font-size: .9rem;
+            transition: background var(--trans), color var(--trans), padding-left var(--trans);
+            border: 1.5px solid transparent;
+        }
+
+        .job-item:hover {
+            background: #fff;
+            border-color: var(--gris-clair);
+            padding-left: 1.3rem;
+            color: var(--rouge);
+            box-shadow: var(--shadow);
+        }
+
+        .job-item::after {
+            content: '→';
+            font-size: .85rem;
+            color: var(--gris-mid);
+            transition: color var(--trans), transform var(--trans);
+        }
+
+        .job-item:hover::after {
+            color: var(--rouge);
+            transform: translateX(3px);
+        }
+
+        /* ─── Footer ────────────────────────────────────────── */
+        footer {
+            background: var(--encre);
+            color: var(--gris-mid);
+            text-align: center;
+            padding: 1.5rem;
+            font-size: .78rem;
+            letter-spacing: .04em;
+        }
+
+        footer strong { color: #fff; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">Emploi<span>.ca</span></div>
+        <span class="header-tag">Portail d'immigration & emploi</span>
+    </header>
+
+    <section class="hero">
+        <span class="hero-eyebrow">🍁 Canada — Opportunités 2025</span>
+        <h1>Choisissez votre<br><em>voie vers le Canada</em></h1>
+        <p>Sélectionnez le type de visa qui correspond à votre projet et découvrez les offres disponibles.</p>
+    </section>
+
+    <main>
+        <p class="section-title">Type de visa souhaité</p>
+
+        <div class="visa-grid">
+
+            <!-- ── Résidence permanente ── -->
+            <label class="visa-card" id="card-rp">
+                <div class="visa-card-left">
+                    <div class="visa-icon">🏠</div>
+                    <div>
+                        <div class="visa-label">Résidence permanente</div>
+                        <div class="visa-sub">Entrée express, PNP, regroupement familial</div>
+                    </div>
+                </div>
+                <label class="toggle">
+                    <input type="radio" name="visa-choice" id="visa-rp">
+                    <span class="toggle-track"></span>
+                    <span class="toggle-thumb"></span>
+                </label>
+            </label>
+
+            <div id="liste-rp" class="liste-visa">
+                <div class="jobs-header">
+                    <p class="section-title" style="margin-bottom:0">Programmes de résidence permanente</p>
+                    <span class="jobs-count"><strong>6</strong> programmes disponibles</span>
+                </div>
+                <div class="job-category">
+                    <div class="category-label">Entrée Express</div>
+                    <a href="form.html?type=rp&prog=federal-qualifie" class="job-item">Travailleurs fédéraux qualifiés</a>
+                    <a href="form.html?type=rp&prog=metiers-federaux" class="job-item">Travailleurs des métiers fédéraux</a>
+                    <a href="form.html?type=rp&prog=experience-canadienne" class="job-item">Catégorie expérience canadienne</a>
+                </div>
+                <div class="job-category">
+                    <div class="category-label">Programmes provinciaux (PNP)</div>
+                    <a href="form.html?type=rp&prog=pnp-ontario" class="job-item">Programme Ontario Immigrant Nominee</a>
+                    <a href="form.html?type=rp&prog=pnp-quebec" class="job-item">Programme des immigrants investisseurs (Québec)</a>
+                </div>
+                <div class="job-category">
+                    <div class="category-label">Regroupement familial</div>
+                    <a href="form.html?type=rp&prog=parrainage-conjoint" class="job-item">Parrainage conjoint / partenaire</a>
+                </div>
+            </div>
+
+            <!-- ── Études ── -->
+            <label class="visa-card" id="card-etude">
+                <div class="visa-card-left">
+                    <div class="visa-icon">🎓</div>
+                    <div>
+                        <div class="visa-label">Visa études</div>
+                        <div class="visa-sub">Permis d'études, universités & cégeps</div>
+                    </div>
+                </div>
+                <label class="toggle">
+                    <input type="radio" name="visa-choice" id="visa-etude">
+                    <span class="toggle-track"></span>
+                    <span class="toggle-thumb"></span>
+                </label>
+            </label>
+
+            <div id="liste-etude" class="liste-visa">
+                <div class="jobs-header">
+                    <p class="section-title" style="margin-bottom:0">Programmes d'études</p>
+                    <span class="jobs-count"><strong>5</strong> programmes disponibles</span>
+                </div>
+                <div class="job-category">
+                    <div class="category-label">Universités</div>
+                    <a href="form.html?type=etude&prog=baccalaureat" class="job-item">Baccalauréat (Licence)</a>
+                    <a href="form.html?type=etude&prog=maitrise" class="job-item">Maîtrise</a>
+                    <a href="form.html?type=etude&prog=doctorat" class="job-item">Doctorat (PhD)</a>
+                </div>
+                <div class="job-category">
+                    <div class="category-label">Cégeps & Collèges</div>
+                    <a href="form.html?type=etude&prog=dec" class="job-item">Diplôme d'études collégiales (DEC)</a>
+                    <a href="form.html?type=etude&prog=aec" class="job-item">Attestation d'études collégiales (AEC)</a>
+                </div>
+            </div>
+
+            <!-- ── Travail ── -->
+            <label class="visa-card" id="card-work">
+                <div class="visa-card-left">
+                    <div class="visa-icon">💼</div>
+                    <div>
+                        <div class="visa-label">Visa travail</div>
+                        <div class="visa-sub">Permis fermé ou ouvert, EIMT, PTET</div>
+                    </div>
+                </div>
+                <label class="toggle">
+                    <input type="radio" name="visa-choice" id="visa-work">
+                    <span class="toggle-track"></span>
+                    <span class="toggle-thumb"></span>
+                </label>
+            </label>
+
+            <div id="liste-work" class="liste-visa">
+                <div class="jobs-header">
+                    <p class="section-title" style="margin-bottom:0">Postes disponibles</p>
+                    <span class="jobs-count"><strong>15</strong> offres actives</span>
+                </div>
+                <div class="job-category">
+                    <div class="category-label">Construction & Logistique</div>
+                    <a href="form.html?type=work&poste=ouvrier-construction" class="job-item">Ouvrier de construction</a>
+                    <a href="form.html?type=work&poste=manoeuvre-chantier" class="job-item">Manœuvre au chantier</a>
+                    <a href="form.html?type=work&poste=magasinier" class="job-item">Magasinier</a>
+                </div>
+                <div class="job-category">
+                    <div class="category-label">Agriculture & Entretien</div>
+                    <a href="form.html?type=work&poste=recolte-saisonniere" class="job-item">Récolte saisonnière</a>
+                    <a href="form.html?type=work&poste=nettoyage" class="job-item">Nettoyage & entretien</a>
+                </div>
+                <div class="job-category">
+                    <div class="category-label">Restauration & Hôtellerie</div>
+                    <a href="form.html?type=work&poste=serveur" class="job-item">Serveur / Serveuse</a>
+                    <a href="form.html?type=work&poste=cuisinier" class="job-item">Cuisinier</a>
+                    <a href="form.html?type=work&poste=plongeur" class="job-item">Plongeur</a>
+                    <a href="form.html?type=work&poste=receptionniste" class="job-item">Réceptionniste</a>
+                </div>
+                <div class="job-category">
+                    <div class="category-label">Santé</div>
+                    <a href="form.html?type=work&poste=infirmier" class="job-item">Infirmier / Infirmière</a>
+                    <a href="form.html?type=work&poste=aide-soignant" class="job-item">Aide-soignant(e)</a>
+                    <a href="form.html?type=work&poste=medecin" class="job-item">Médecin</a>
+                </div>
+                <div class="job-category">
+                    <div class="category-label">Technologies</div>
+                    <a href="form.html?type=work&poste=informatique" class="job-item">Informatique générale</a>
+                    <a href="form.html?type=work&poste=developpeur" class="job-item">Développeur logiciel</a>
+                    <a href="form.html?type=work&poste=cybersecurite" class="job-item">Cybersécurité</a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        &copy; 2025 <strong>Emploi.ca</strong> — Tous droits réservés
+    </footer>
+
+    <script>
+        const radios = document.querySelectorAll('input[type="radio"][name="visa-choice"]');
+        const cards  = document.querySelectorAll('.visa-card');
+        const listes = document.querySelectorAll('.liste-visa');
+
+        const mapping = {
+            'visa-rp'   : 'liste-rp',
+            'visa-etude': 'liste-etude',
+            'visa-work' : 'liste-work'
+        };
+        const cardMapping = {
+            'visa-rp'   : 'card-rp',
+            'visa-etude': 'card-etude',
+            'visa-work' : 'card-work'
+        };
+
+        radios.forEach(radio => {
+            radio.addEventListener('change', function () {
+                listes.forEach(l => l.classList.remove('visible'));
+                cards.forEach(c  => c.classList.remove('active'));
+
+                if (this.checked) {
+                    const targetListe = document.getElementById(mapping[this.id]);
+                    const targetCard  = document.getElementById(cardMapping[this.id]);
+                    if (targetListe) targetListe.classList.add('visible');
+                    if (targetCard)  targetCard.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
